@@ -5,10 +5,11 @@ import { makeExecutableSchema } from 'graphql-tools';
 
 import typeDefs from './schema';
 import resolvers from './resolvers';
+import models from './models';
 
 
 const PORT = 3000;
-const myGrapqhQLSchema = makeExecutableSchema({
+const schema = makeExecutableSchema({
     typeDefs,
     resolvers
 });
@@ -19,6 +20,6 @@ app.use('/graphiql', graphiqlExpress({
     endpointURL: '/graphql'
 }))
 
-app.use('/graphql', bodyParser.json(), graphqlExpress({schema: myGrapqhQLSchema}));
+app.use('/graphql', bodyParser.json(), graphqlExpress({ schema, context: { models } }));
 
-app.listen(PORT);
+models.sequelize.sync().then(() => app.listen(PORT));
