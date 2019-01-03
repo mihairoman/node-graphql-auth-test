@@ -15,6 +15,7 @@ export default `
 
     type User {
         id: Int!
+        email: String!
         username: String!
         createdAt: String!
         updatedAt: String!
@@ -30,10 +31,11 @@ export default `
     }
 
     type Mutation {
-        createUser(username: String!): User
         updateUser(username: String!, newUsername: String!): [Int!]!
         deleteUser(username: String!): Int!
         createBoard(owner: Int!, name: String): Board!
         createSuggestion(creatorId: Int!, text: String, boardId: Int!): Suggestion!
+        register(username: String!, email: String!, password: String!): User!
+        login(email: String!, password: String!): String!
     }
 `;

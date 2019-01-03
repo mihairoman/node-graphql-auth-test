@@ -7,7 +7,7 @@ import typeDefs from './schema';
 import resolvers from './resolvers';
 import models from './models';
 
-
+const SECRET = 'asdsad12345ddfs324wefsdfdsf';
 const PORT = 3000;
 const schema = makeExecutableSchema({
     typeDefs,
@@ -20,6 +20,6 @@ app.use('/graphiql', graphiqlExpress({
     endpointURL: '/graphql'
 }))
 
-app.use('/graphql', bodyParser.json(), graphqlExpress({ schema, context: { models } }));
+app.use('/graphql', bodyParser.json(), graphqlExpress({ schema, context: { models, SECRET } }));
 
 models.sequelize.sync().then(() => app.listen(PORT));
