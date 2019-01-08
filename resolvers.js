@@ -32,11 +32,18 @@ export default {
 
     Query: {
         getUsers: (parent, args, { models }) => models.User.findAll(),
-        getUser: (parent, { username }, { models }) => models.User.findOne({
-            where: {
-                username
+        me: (parent, { username }, { models, user }) => {
+            if (user) {
+                return models.User.findOne({
+                    where: {
+                        id: user.id
+                    }
+                });
+            } else {
+                console.error('User not found');
             }
-        }),
+            return null;
+        },
         userBoards: (parent, { owner }, { models }) => models.Board.findAll({
             where: {
                 owner

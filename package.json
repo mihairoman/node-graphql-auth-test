@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "debug": "nodemon --exec babel-node --inspect index.js",
     "start": "nodemon --exec babel-node index.js"
   },
   "author": "",
@@ -12,6 +13,7 @@
   "dependencies": {
     "bcrypt": "^3.0.3",
     "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
     "graphql-server-express": "^1.4.0",
     "graphql-tools": "^4.0.3",
@@ -24,6 +26,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-latest": "^6.24.1",
+    "babel-register": "^6.26.0",
     "graphql": "^14.0.2",
     "nodemon": "^1.18.9"
   }
