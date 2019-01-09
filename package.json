@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "debug": "nodemon --exec babel-node --inspect index.js",
-    "start": "nodemon --exec babel-node index.js"
+    "start": "nodemon --exec PORT=3000 SECRET=asdsad12345ddfs324wefsdfdsf babel-node index.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,19 +15,21 @@
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",
+    "graphql": "^14.0.2",
     "graphql-server-express": "^1.4.0",
+    "graphql-subscriptions": "^1.0.0",
     "graphql-tools": "^4.0.3",
     "jsonwebtoken": "^8.4.0",
     "lodash": "^4.17.11",
     "pg": "^7.7.1",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.42.0"
+    "sequelize": "^4.42.0",
+    "subscriptions-transport-ws": "^0.9.15"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-latest": "^6.24.1",
     "babel-register": "^6.26.0",
-    "graphql": "^14.0.2",
     "nodemon": "^1.18.9"
   }
 }

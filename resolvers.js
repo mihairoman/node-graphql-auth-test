@@ -1,8 +1,17 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
+import { PubSub } from 'graphql-subscriptions';
+
+export const pubSub = new PubSub();
+const USER_ADDED = 'USER_ADDED';
 
 export default {
+    Subscription: {
+        userAdded: {
+            subscribe: () => pubSub.asyncIterator(USER_ADDED)
+        }
+    },
     User: {
         boards: ({ id }, args, { models }) => models.Board.findAll({
             where: {
@@ -86,6 +95,13 @@ export default {
             );
 
             return token;
+        },
+        createUser: async (parent, args, { models }) => {
+            const user = args;
+            user.password = 'dummy';
+            const newUser = await models.User.create(user);
+            pubSub.publish(USER_ADDED, { newUser });
+            return newUser;
         }
     }
 }; 
