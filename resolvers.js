@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
 import { PubSub } from 'graphql-subscriptions';
+import { requiresAuth, requiresAdmin } from './permissions';
 
 export const pubSub = new PubSub();
 const USER_ADDED = 'USER_ADDED';
@@ -69,7 +70,9 @@ export default {
         updateUser: (parent, { username, newUsername }, { models }) =>
             models.User.update({ username: newUsername }, { where: { username } }),
         deleteUser: (parent, args, { models }) => models.User.destroy({ where: args }),
-        createBoard: (parent, args, { models }) => models.Board.create(args),
+        createBoard: requiresAuth.createResolver((parent, args, { models }) =>
+            models.Board.create(args)
+        ),
         createSuggestion: (parent, args, { models }) => models.Suggestion.create(args),
         register: async (parent, args, { models }) => {
             const user = args;
@@ -89,7 +92,7 @@ export default {
             }
 
             const token = jwt.sign(
-                { user: _.pick(user, ['id', 'username']) },
+                { user: _.pick(user, ['id', 'username', 'isAdmin']) },
                 SECRET,
                 { expiresIn: '1y' }
             );
