@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import _ from 'lodash';
 import { PubSub } from 'graphql-subscriptions';
 import { requiresAuth, requiresAdmin } from './permissions';
+import { tryLogin, refreshTokens } from './auth';
 
 export const pubSub = new PubSub();
 const USER_ADDED = 'USER_ADDED';
@@ -79,32 +79,15 @@ export default {
             user.password = await bcrypt.hash(user.password, 12);
             return models.User.create(user);
         },
-        login: async (parent, { email, password }, { models, SECRET }) => {
-            const user = await models.User.findOne({ where: { email } });
-            if (!user) {
-                throw new Error('No user with the specified email');
-            }
-
-            const valid = await bcrypt.compare(password, user.password);
-
-            if (!valid) {
-                throw new Error('Incorrect password');
-            }
-
-            const token = jwt.sign(
-                { user: _.pick(user, ['id', 'username', 'isAdmin']) },
-                SECRET,
-                { expiresIn: '1y' }
-            );
-
-            return token;
-        },
+        login: async (parent, { email, password }, { models, SECRET }) => tryLogin(email, password, models, SECRET),
         createUser: async (parent, args, { models }) => {
             const user = args;
             user.password = 'dummy';
             const newUser = await models.User.create(user);
             pubSub.publish(USER_ADDED, { newUser });
             return newUser;
-        }
+        },
+        refreshTokens: (parent, { token, refreshToken }, { models, SECRET }) =>
+            refreshTokens(token, refreshToken, models, SECRET)
     }
 }; 

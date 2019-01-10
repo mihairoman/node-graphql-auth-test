@@ -4,6 +4,11 @@ export default `
         userAdded: User!
     }
 
+    type AuthPayload {
+        token: String!
+        refreshToken: String!
+    }
+
     type Suggestion {
         id: Int!
         text: String!
@@ -40,8 +45,9 @@ export default `
         createBoard(owner: Int!, name: String): Board!
         createSuggestion(creatorId: Int!, text: String, boardId: Int!): Suggestion!
         register(username: String!, email: String!, password: String!, isAdmin: Boolean): User!
-        login(email: String!, password: String!): String!
+        login(email: String!, password: String!): AuthPayload!
         createUser(username: String!): User!
+        refreshTokens(token: String!, refreshToken: String!): AuthPayload!
     }
 
     schema {
