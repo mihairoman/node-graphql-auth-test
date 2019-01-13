@@ -20,7 +20,7 @@ const schema = makeExecutableSchema({
 const app = express();
 
 app.use(cors('*'));
-app.use(extractUserFromJwt);
+app.use(extractUserFromJwt(models));
 
 app.use(
     '/graphiql',

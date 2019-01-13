@@ -42,16 +42,17 @@ export default {
 
     Query: {
         getUsers: (parent, args, { models }) => models.User.findAll(),
-        me: (parent, { username }, { models, user }) => {
+        me: (parent, args, { models, user }) => {
+            console.log('#####', user);
             if (user) {
+                // they are logged in
                 return models.User.findOne({
                     where: {
-                        id: user.id
-                    }
+                        id: user.id,
+                    },
                 });
-            } else {
-                console.error('User not found');
             }
+            // not logged in user
             return null;
         },
         userBoards: (parent, { owner }, { models }) => models.Board.findAll({
