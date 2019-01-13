@@ -4,13 +4,10 @@ import { refreshTokens } from '../auth';
 export default (models) => {
     return async (req, res, next) => {
         const token = req.headers['x-token'];
-        console.log("\n MODELS: ", models);
-        console.log("\n");
 
         if (token) {
             try {
                 const { user } = jwt.verify(token, process.env.SECRET);
-                console.log("YOOOO ", user);
                 req.user = user;
             } catch (err) {
                 const refreshToken = req.headers['x-refresh-token'];
