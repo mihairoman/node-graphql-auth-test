@@ -7,10 +7,13 @@ import extractUserFromJwt from './middleware/extractUserFromJwt';
 import { createServer } from 'http';
 import { execute, subscribe } from 'graphql';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
+import DataLoader from 'dataloader';
 
 import typeDefs from './schema';
 import resolvers from './resolvers';
 import models from './models';
+
+import batchSuggestions from './dataloader/suggestions';
 
 const schema = makeExecutableSchema({
     typeDefs,
@@ -38,6 +41,7 @@ app.use(
             models,
             SECRET: process.env.SECRET,
             user: req.user,
+            suggestionLoader: new DataLoader(keys => batchSuggestions(keys, models))
         },
     })),
 );

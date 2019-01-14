@@ -26,11 +26,7 @@ export default {
         }),
     },
     Board: {
-        suggestions: ({ id }, args, { models }) => models.Suggestion.findAll({
-            where: {
-                boardId: id,
-            },
-        }),
+        suggestions: ({ id }, args, { suggestionLoader }) => suggestionLoader.load(id),
     },
     Suggestion: {
         creator: ({ creatorId }, args, { models }) => models.User.findOne({
