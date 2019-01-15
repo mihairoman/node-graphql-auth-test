@@ -8,12 +8,14 @@ import { createServer } from 'http';
 import { execute, subscribe } from 'graphql';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 import DataLoader from 'dataloader';
+import passport from 'passport';
 
 import typeDefs from './schema';
 import resolvers from './resolvers';
 import models from './models';
 
 import batchSuggestions from './dataloader/suggestions';
+import { getGoogleStrategy, googleAuth } from './auth/googleAuth';
 
 const schema = makeExecutableSchema({
     typeDefs,
@@ -21,6 +23,8 @@ const schema = makeExecutableSchema({
 });
 
 const app = express();
+
+passport.use(getGoogleStrategy(app));
 
 app.use(cors('*'));
 app.use(extractUserFromJwt(models));
