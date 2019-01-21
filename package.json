@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "debug": "nodemon --exec babel-node --inspect index.js",
-    "start": "nodemon --exec PORT=3000 SECRET=asdsad12345ddfs324wefsdfdsf babel-node index.js"
+    "start": "nodemon --exec babel-node index.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +15,7 @@
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "dataloader": "^1.4.0",
+    "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "graphql": "^14.0.2",
     "graphql-server-express": "^1.4.0",
@@ -23,7 +24,7 @@
     "jsonwebtoken": "^8.4.0",
     "lodash": "^4.17.11",
     "passport": "^0.4.0",
-    "passport-google": "^0.3.0",
+    "passport-google-oauth": "^1.0.0",
     "pg": "^7.7.1",
     "pg-hstore": "^2.3.2",
     "sequelize": "^4.42.0",

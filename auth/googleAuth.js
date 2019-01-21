@@ -1,26 +1,19 @@
-import GoogleStrategy from 'passport-google';
+import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
 
-export const getGoogleStrategy = () => new GoogleStrategy({
-    returnURL: 'http://localhost:3000/auth/google/return',
-    realm: 'http://localhost:3000/'
+//   Use the GoogleStrategy within Passport.
+//   Strategies in Passport require a `verify` function, which accept
+//   credentials (in this case, an accessToken, refreshToken, and Google
+//   profile), and invoke a callback with a user object.
+export const getGoogleStrategy = ({User}) => new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "https://fcaa837f.ngrok.io/auth/google/callback"
 },
-    (identifier, done) => {
-        User.findByOpenID({ openId: identifier }, (err, user) => {
-            return done(err, user);
-        });
+    (accessToken, refreshToken, profile, done) => {
+        // User.findOrCreate({ googleId: profile.id }, function (err, user) {
+        //     return done(err, user);
+        // });
+        console.log('PROFILE: ', profile);
+        done(null, profile);
     }
 );
-
-export const authGoogle = (app, passport) => app.get('/auth/google',
-    passport.authenticate('google'),
-    function (req, res) {
-        // The request will be redirected to Google for authentication, so
-        // this function will not be called.
-    });
-
-// app.get('/auth/google/callback',
-//     passport.authenticate('google', { failureRedirect: '/login' }),
-//     function (req, res) {
-//         // Successful authentication, redirect home.
-//         res.redirect('/');
-//     });
