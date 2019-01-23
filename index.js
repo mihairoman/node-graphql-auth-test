@@ -16,7 +16,7 @@ import resolvers from './resolvers';
 import models from './models';
 
 import batchSuggestions from './dataloader/suggestions';
-import { getGoogleStrategy, googleAuth } from './auth/googleAuth';
+import { getGoogleStrategy, authGoogle } from './auth/authGoogle';
 
 const schema = makeExecutableSchema({
     typeDefs,
